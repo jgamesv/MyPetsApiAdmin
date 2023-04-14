@@ -24,4 +24,6 @@ public class Employee {
     private String tel;
     @Column(name = "pass")
     private String pass;
+    @Column(name = "rol")
+    private String rol;
 }
