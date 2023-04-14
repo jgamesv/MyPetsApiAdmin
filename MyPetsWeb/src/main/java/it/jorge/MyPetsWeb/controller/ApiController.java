@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static it.jorge.MyPetsWeb.util.Functions.ENCODER;
-import static it.jorge.MyPetsWeb.util.Functions.getJWTToken;
+import static it.jorge.MyPetsWeb.util.Functions.*;
 
 @RestController
 @RequestMapping("/api")
@@ -60,29 +59,30 @@ public class ApiController {
         return pet;
     }
     @GetMapping("/admin")
-    public List<Employee> findAllEmployees(@RequestHeader("Authorization") String aut){
+    public ResponseEntity<?> findAllEmployees(@RequestHeader("Authorization") String aut){
         Claims claim = new Functions().getClaims(aut);
-        if (claim.get("rol")==2){
-            return employeeService.findAll();
+        if (claim.get("rol").equals("2")){
+            return ResponseEntity.ok(employeeService.findAll());
         }
-        return null;
+        return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
     @PostMapping("/admin")
-    public Employee AddEmployee(@RequestHeader("Authorization") String aut, @RequestBody Employee employee){
-        Claims claim = new Functions().getClaims(aut);
-        if (claim.get("rol")==2){
-            return employeeService.save(employee);
+    public ResponseEntity<?> AddEmployee(@RequestHeader("Authorization") String token,@RequestBody Employee employee){
+        Claims claim = new Functions().getClaims(token);
+        if (claim.get("rol").equals("2")) {
+            employee.setPass(encodePass(employee.getPass()));
+            return ResponseEntity.ok(employeeService.save(employee));
         }
-        return null;
+        return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
     @DeleteMapping("/admin")
-    public Employee deleteEmployee(@RequestHeader("Authorization") String aut, @RequestBody Employee employee){
+    public ResponseEntity<?> deleteEmployee(@RequestHeader("Authorization") String aut, @RequestBody Employee employee){
         Claims claim = new Functions().getClaims(aut);
-        if (claim.get("rol")==2){
+        if ((Integer)claim.get("rol")==2){
             employeeService.delete(employee);
-            return employee;
+            return ResponseEntity.ok(employee);
         }
-        return null;
+        return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
 }

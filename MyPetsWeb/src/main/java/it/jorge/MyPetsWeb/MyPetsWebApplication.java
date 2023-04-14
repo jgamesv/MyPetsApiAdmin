@@ -31,8 +31,8 @@ public class MyPetsWebApplication {
 			http.csrf().disable()
 					.addFilterAfter(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
-					.antMatchers(HttpMethod.POST, "/api/users/login").permitAll()
-					.antMatchers(HttpMethod.POST, "/api/users").permitAll()
+					.antMatchers(HttpMethod.POST, "/api/login").permitAll()
+					.antMatchers(HttpMethod.POST, "/api/admin").permitAll()
 					.antMatchers(AUTH_WHITE_LIST).permitAll()
 					.anyRequest().authenticated();
 		}

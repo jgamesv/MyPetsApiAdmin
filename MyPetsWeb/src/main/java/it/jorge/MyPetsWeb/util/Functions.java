@@ -45,7 +45,7 @@ public class Functions {
 
         return token;
     }
-    public String encodePass (String pass){
+    public static String encodePass (String pass){
 
         return ENCODER.encode(pass);
     }

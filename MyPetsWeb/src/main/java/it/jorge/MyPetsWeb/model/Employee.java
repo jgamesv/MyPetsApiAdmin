@@ -26,4 +26,9 @@ public class Employee {
     private String pass;
     @Column(name = "rol")
     private String rol;
+
+    public Employee(String email, String pass){
+        this.pass = pass;
+        this.email = email;
+    }
 }
