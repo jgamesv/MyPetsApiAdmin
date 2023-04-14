@@ -21,9 +21,9 @@ public class Functions {
     }
     private final String SECRET = "mySecretKey";
 
-    private final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
-    public String getJWTToken(Employee employee) {
+
+    public static String getJWTToken(Employee employee) {
         String secretKey = "mySecretKey";
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils
                 .commaSeparatedStringToAuthorityList("ROLE_USER");
@@ -52,4 +52,6 @@ public class Functions {
     public Claims getClaims (String token){
         return Jwts.parser().setSigningKey(SECRET.getBytes()).parseClaimsJws(token).getBody();
     }
+
+    public static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 }

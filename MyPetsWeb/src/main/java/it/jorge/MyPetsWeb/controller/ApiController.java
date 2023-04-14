@@ -8,9 +8,14 @@ import it.jorge.MyPetsWeb.service.EmployeeService;
 import it.jorge.MyPetsWeb.service.PetService;
 import it.jorge.MyPetsWeb.util.Functions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static it.jorge.MyPetsWeb.util.Functions.ENCODER;
+import static it.jorge.MyPetsWeb.util.Functions.getJWTToken;
 
 @RestController
 @RequestMapping("/api")
@@ -19,6 +24,19 @@ public class ApiController {
     PetService petService;
     @Autowired
     EmployeeService employeeService;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Employee employee){
+        Employee login = employeeService.hashLogin(employee.getEmail());
+
+        if(login!= null){
+            if (ENCODER.matches(employee.getPass(), login.getPass())){
+                return ResponseEntity.ok(getJWTToken(login));
+            }
+        }
+        return new ResponseEntity("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
     @GetMapping("/pet")
     public List<Pet> findAllPet (){
         return petService.findAll();
