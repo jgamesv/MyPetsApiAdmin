@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="empleados")
@@ -14,7 +12,18 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "tel")
+    private String tel;
+    @Column(name = "pass")
+    private String pass;
     @Column(name = "rol")
-    private int rol;
+    private String rol;
 }
